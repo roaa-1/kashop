@@ -3,16 +3,17 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { TextField, Button, Box, Breadcrumbs, Typography } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
+import Container from "@mui/material/Container";
 
 function Register() {
 const { register, handleSubmit } = useForm();
 
 const registerForm = async (values) => {
     try {
-    const response = await axios.post("http://knowledgeshop.runasp.net/api/Auth/Account/Register",values);
+    const response = await axios.post(`https://knowledgeshop.runasp.net/api/Auth/Account/Register`,values);
     console.log(response);
-    } catch (error) {
-    console.error(error);
+    } catch (err) {
+    console.log(err);
     }
 };
 
@@ -21,7 +22,7 @@ const registerForm = async (values) => {
 return (
     <Box className="register-form">
     <Typography variant="h2">Register Page</Typography>
-
+    <Container maxWidth="xl">
     <Box
         onSubmit={handleSubmit(registerForm)}
         component={'form'}
@@ -40,6 +41,7 @@ return (
         Register
         </Button>
     </Box>
+    </Container>
     </Box>
 );
 }
