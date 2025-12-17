@@ -1,18 +1,19 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
-import axios from 'axios';
 import { TextField, Button, Box, Breadcrumbs, Typography } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import Container from "@mui/material/Container";
 import { RegisterSchema } from '../../pages/validation/RegisterSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
+import CircularProgress from '@mui/material/CircularProgress';
+import axiosInstance from '../../Api/axiosInstance';
 function Register() {
     const [serverErrors,setServerErrors]= useState([]);
-const { register, handleSubmit, formState:{errors } } = useForm({ resolver: yupResolver(RegisterSchema),mode: 'onBlur' });
+const { register, handleSubmit, formState:{errors, isSubmitting } } = useForm({ resolver: yupResolver(RegisterSchema),mode: 'onBlur' });
 const registerForm = async (values) => {
     try {
-    const response = await axios.post(`https://knowledgeshop.runasp.net/api/Auth/Account/Register`,values);
+    const response = await axiosInstance.post(`/Auth/Account/Register`,values);
     console.log(response);
     } catch (err) {
     console.log(err);
@@ -51,8 +52,8 @@ return (
         <TextField label="phone number" {...register('phoneNumber')} variant="outlined" sx={{ width: "1000px", borderRadius: "12px" }} 
         error={errors.phoneNumber } helperText={errors.phoneNumber?.message}
         />
-        <Button variant="contained" type="submit" sx={{ width: "200px", borderRadius: "12px", backgroundColor: "#000000" }}>
-        Register
+        <Button variant="contained" type="submit" disable={isSubmitting} sx={{ width: "200px", borderRadius: "12px", backgroundColor: "#000000" }}>
+        {isSubmitting ? <CircularProgress /> : 'Register'}
         </Button>
     </Box>
     </Container>

@@ -21,6 +21,7 @@ function Navbar() {
                         KAShop
                     </Typography>
                     <Box sx={{ display: 'flex', gap: 2 ,  }}>
+                    <Link component={RouterLink} to="/home" color="#000000" underline='none'> Home</Link>
                     <Link component={RouterLink} to="auth/login" color="#000000" underline='none'> Login</Link>
                     <Link component={RouterLink} to="auth/register" color="#000000" underline='none'> Register</Link>
                     </Box>

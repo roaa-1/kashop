@@ -1,12 +1,11 @@
 import React from 'react';
+import Categories from '../../components/Categories/Categories';
 
 
 function Home() { 
     return (
         <>
-        <div>< div className="container"></div>
-            <h1>Welcome to the Home Page</h1>
-        </div>
+        <Categories />
         </>
     )
 }
