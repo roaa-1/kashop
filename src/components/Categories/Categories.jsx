@@ -1,22 +1,23 @@
-import React, { useEffect } from 'react';
-import axiosInstance from '../../Api/axiosInstance';
+import React from 'react'
 import { Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { Container, Grid, Card } from '@mui/material';
+import { CircularProgress } from '@mui/material';
+import useCategories from '../../hooks/useCategories';
+
 function Categories() {
-    const [categories , setCategories] = React.useState([]);
-    const getCategories = async ()=>{
-        try{
-            const response = await axiosInstance.get('/Categories');
-            console.log(response);
-            setCategories(response.data);
-        }catch(error){
-            console.log(error);
-        }
-    }
-    useEffect(()=>{
-        getCategories();
-    },[]);
+const {isLoading,isError,data}= useCategories();
+if(isLoading)
+    return
+    <>
+    <CircularProgress ></CircularProgress>
+    </>
+if(isError)
+    return
+    <>
+    <Typography variant='h6' color='error'>Something went wrong</Typography>
+    </>
+
     return (
     <>
     <Box p={2}>
@@ -24,7 +25,7 @@ function Categories() {
         {
         <Container maxWidth="lg">
             <Grid container spacing={3}>
-        {categories.map((category) => 
+        {data.map((category) => 
         <Grid key={category.id}  item size={{xs:12,sm:6,md:5,lg:3}}>
             <Card sx={{textAlign: 'center', padding:2}}>
                 {category.name}
