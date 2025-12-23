@@ -1,31 +1,25 @@
-import React from 'react'
+import React  from 'react';
 import { Box, TextField, Button, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
-import { useState ,useEffect} from 'react';
+import { useEffect } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ResetPasswordSchema } from '../validation/ResetPasswordSchema';
-import axiosInstance from '../../Api/axiosInstance';
 import CircularProgress from '@mui/material/CircularProgress';
+import useResetpassword from '../../hooks/useResetpassword';
+
 
 
 function Resetpassword() {
-    const[serverErrors,setServerErrors]= useState([]);
-    const { register, handleSubmit,setValue,formState:{errors,isSubmitting } } = useForm({resolver: yupResolver(ResetPasswordSchema),mode:'onBlur' });
-    useEffect(() => {
-    const storedEmail = localStorage.getItem('resetEmail');
-    if (storedEmail) {
-    setValue('email', storedEmail, { shouldDirty: false });
-    }
-}, [setValue]);
+const {resetMutation, serverErrors} = useResetpassword();
+        useEffect(() => {
+        const storedEmail = localStorage.getItem('resetEmail');
+        if (storedEmail) {
+        setValue('email', storedEmail, { shouldDirty: false });
+        }
+    }, [setValue]);
+const { register, handleSubmit,setValue,formState:{errors,isSubmitting } } = useForm({resolver: yupResolver(ResetPasswordSchema),mode:'onBlur' });
     const ResetPassword= async (values) => {
-    try {
-        const response = await axiosInstance.post("/Auth/Account/ResetPassword",values);
-        console.log(response);
-        localStorage.removeItem("resetEmail");
-    } catch (err) {
-        console.log(err);
-        setServerErrors(err.response.data.errors);
-    }
+        await resetMutation.mutateAsync(values);
     }
 
   return (

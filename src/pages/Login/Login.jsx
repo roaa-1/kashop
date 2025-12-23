@@ -1,30 +1,20 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
-import { useState } from 'react';
+
+import {  useForm } from 'react-hook-form';
 import { TextField, Button, Box, Breadcrumbs, Typography } from '@mui/material';
 import { LoginSchema } from '../../pages/validation/LoginSchema';
 import { Link as RouterLink } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import CircularProgress from '@mui/material/CircularProgress';
-import axiosInstance from '../../Api/axiosInstance';
 import Link from '@mui/material/Link';
+import { AuthContext } from '../../context/AuthContext';
 
+import useLogin from '../../hooks/useLogin';
 
 function Login() {
-    const[serverErrors,setServerErrors]= useState([]);
-    const { register, handleSubmit, formState:{errors,isSubmitting } } = useForm({resolver: yupResolver(LoginSchema),mode:'onBlur'});
+    const{loginMutation, serverErrors}= useLogin();
+ const { register, handleSubmit, formState:{errors,isSubmitting } } = useForm({resolver: yupResolver(LoginSchema),mode:'onBlur'});
     const loginForm = async (values) => {
-    try {
-    const response = await axiosInstance.post("/Auth/Account/Login",values);
-    if (response.status === 200) {
-    console.log(response);
-    localStorage.setItem("token", response.data.accessToken);
-    }
-    console.log(response);
-    } catch (err) {
-    console.log(err);
-    setServerErrors(err.response.data.errors);
-    }
+        await loginMutation.mutateAsync(values);
 };
     
     return (

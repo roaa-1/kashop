@@ -1,31 +1,19 @@
 import { Box } from '@mui/material';
 import { Typography, Button } from '@mui/material';
 import { useForm } from 'react-hook-form';
-import { useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { SendCodeSchema } from '../validation/SendCode';
-import axiosInstance from '../../Api/axiosInstance';
 import TextField from '@mui/material/TextField';
 import React from 'react'
 import CircularProgress from '@mui/material/CircularProgress';
-import { useNavigate } from 'react-router';
+
+import useSendCode from '../../hooks/useSendCode';
+
 function SendCode() {
-    const navigate = useNavigate();
-    const[serverErrors,setServerErrors]= useState([]);
+   const {sendMutation, serverErrors} = useSendCode();
     const { register, handleSubmit, formState:{errors,isSubmitting } } = useForm({resolver: yupResolver(SendCodeSchema),mode:'onBlur'});
     const sendCode = async(values) => {
-    try {
-    const response = await axiosInstance.post("/Auth/Account/SendCode",values);
-    if (response.status === 200) {
-    localStorage.setItem("email", values.email);
-    localStorage.setItem("token", response.data.accessToken);
-        navigate('/auth/resetPassword');
-    }
-    console.log(response);
- } catch (err) {
-    console.log(err);
-    setServerErrors(err.response.data.errors);
-}
+        await sendMutation.mutateAsync(values);
 };
     return (
         <>

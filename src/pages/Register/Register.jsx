@@ -1,24 +1,19 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { useState } from 'react';
 import { TextField, Button, Box, Breadcrumbs, Typography } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import Container from "@mui/material/Container";
 import { RegisterSchema } from '../../pages/validation/RegisterSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import CircularProgress from '@mui/material/CircularProgress';
-import axiosInstance from '../../Api/axiosInstance';
+import useRegister from '../../hooks/useRegister';
+
 function Register() {
-    const [serverErrors,setServerErrors]= useState([]);
+const {registerMutation, serverErrors} = useRegister();
 const { register, handleSubmit, formState:{errors, isSubmitting } } = useForm({ resolver: yupResolver(RegisterSchema),mode: 'onBlur' });
 const registerForm = async (values) => {
-    try {
-    const response = await axiosInstance.post(`/Auth/Account/Register`,values);
-    console.log(response);
-    } catch (err) {
-    console.log(err);
-    setServerErrors(err.response.data.errors);
-    }
+    await registerMutation.mutateAsync(values);
+ 
 };
 return (
     <Box className="register-form">
