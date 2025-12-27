@@ -20,7 +20,7 @@ function Navbar() {
     const navigate = useNavigate('');
     const handleLogout = () => {
         logout();
-        navigate('/login')
+        navigate('/auth/login')
     }
     return (
     <Container maxWidth="xl">
@@ -32,10 +32,10 @@ function Navbar() {
                     </Typography>
                     <Box sx={{ display: 'flex', gap: 2  }}>
                     <Link component={RouterLink} to="/home" color="#000000" underline='none'> Home</Link>
-                    {token ? 
+                    {token !== null && token !== "" ? 
                     <>
                     <Link component={RouterLink} to="/cart" color="#000000" underline='none'> Cart</Link>
-                    <Button  color="#7d1717ff" onClick={handleLogout}> Logout</Button>
+                    <Button  sx={{color:"#7d1717ff",pb: 3}} onClick={handleLogout}> Logout</Button>
                     </>
                     :
                     <>

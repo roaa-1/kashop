@@ -4,6 +4,7 @@ import axiosInstance from '../Api/axiosInstance';
 import { useNavigate } from 'react-router-dom';
 
 
+
 function useSendCode() {
         const navigate = useNavigate();
     const[serverErrors,setServerErrors]= useState([]);
@@ -12,7 +13,7 @@ function useSendCode() {
             return await axiosInstance.post("/Auth/Account/SendCode",values);
         },
         onSuccess: (data) => {
-            navigate('/login');
+            navigate('/auth/resetPassword');
             console.log(data);
         },  
         onError: (err) => {

@@ -6,8 +6,7 @@ import { SendCodeSchema } from '../validation/SendCode';
 import TextField from '@mui/material/TextField';
 import React from 'react'
 import CircularProgress from '@mui/material/CircularProgress';
-
-import useSendCode from '../../hooks/useSendCode';
+import useSendCode from '../../hooks/useSendcode';
 
 function SendCode() {
    const {sendMutation, serverErrors} = useSendCode();
@@ -34,7 +33,7 @@ function SendCode() {
         <TextField label="user email" {...register('email')} variant="outlined" sx={{ width: "1000px", borderRadius: "12px" }}
         error={errors.email } helperText={errors.email?.message} 
         />
-        <Button variant="contained" type="submit" disable={isSubmitting} sx={{ width: "200px", borderRadius: "12px", backgroundColor: "#000000" }}>
+        <Button variant="contained" type="submit" disabled={isSubmitting} sx={{ width: "200px", borderRadius: "12px", backgroundColor: "#000000" }}>
         {isSubmitting ? <CircularProgress /> : 'Send Code'}
         </Button>
     </Box>

@@ -1,7 +1,6 @@
 import React  from 'react';
 import { Box, TextField, Button, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
-import { useEffect } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ResetPasswordSchema } from '../validation/ResetPasswordSchema';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -10,14 +9,10 @@ import useResetpassword from '../../hooks/useResetpassword';
 
 
 function Resetpassword() {
-const {resetMutation, serverErrors} = useResetpassword();
-        useEffect(() => {
-        const storedEmail = localStorage.getItem('resetEmail');
-        if (storedEmail) {
-        setValue('email', storedEmail, { shouldDirty: false });
-        }
-    }, [setValue]);
-const { register, handleSubmit,setValue,formState:{errors,isSubmitting } } = useForm({resolver: yupResolver(ResetPasswordSchema),mode:'onBlur' });
+const {resetMutation, serverErrors,} = useResetpassword();
+console.log(localStorage.getItem('resetEmail'));
+
+const { register, handleSubmit,formState:{errors,isSubmitting } } = useForm({resolver: yupResolver(ResetPasswordSchema),mode:'onBlur',defaultValues:{ email: localStorage.getItem('resetEmail') || '' }   });
     const ResetPassword= async (values) => {
         await resetMutation.mutateAsync(values);
     }
@@ -48,7 +43,7 @@ const { register, handleSubmit,setValue,formState:{errors,isSubmitting } } = use
         <TextField label="new password" {...register('newPassword')} variant="outlined" sx={{ width: "1000px", borderRadius: "12px" }}
         error={errors.newPassword } helperText={errors.newPassword?.message} 
         />
-        <Button variant="contained" type="submit" disable={isSubmitting} sx={{ width: "200px", borderRadius: "12px", backgroundColor: "#000000" }}>
+        <Button variant="contained" type="submit" disabled={isSubmitting} sx={{ width: "200px", borderRadius: "12px", backgroundColor: "#000000" }}>
         {isSubmitting ? <CircularProgress /> : 'Reset Password'}
         </Button>
     </Box>

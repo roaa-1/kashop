@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { createContext } from 'react';
 
 
-export const AuthContext = createContext();
+
+export const AuthContext = createContext(null);
 export default function AuthContextProvider({ children }) {
     const [token, setToken] = useState(localStorage.getItem("token") || null);
     const logout = () => {
@@ -11,7 +12,7 @@ export default function AuthContextProvider({ children }) {
         console.log('Logged out successfully');
     }
     const setAccessToken = (Token) => {
-        localStorage.setItem('token', token);
+        localStorage.setItem('token', Token);
         setToken(Token);
     }   
     return (

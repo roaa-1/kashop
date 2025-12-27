@@ -11,7 +11,7 @@ function useRegister() {
             return await axiosInstance.post(`/Auth/Account/Register`,values);
         },
         onSuccess:()=>{
-            Navigate('/login');
+            Navigate('/auth/login');
         },
         onError: (err) => {
             setServerErrors(err.response.data.errors);
